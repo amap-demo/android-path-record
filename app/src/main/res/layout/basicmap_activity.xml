@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="48dp" 
+        android:background="@drawable/title_background" >
+
+        <ToggleButton
+            android:id="@+id/locationbtn"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:descendantFocusability="beforeDescendants"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="5dp"
+            android:paddingStart="5dp" 
+            android:textOn="停止"
+            android:textOff="开始"> 
+        </ToggleButton>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/title_center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="18dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/title_lly_right"
+            android:layout_width="90dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:descendantFocusability="beforeDescendants"
+            android:gravity="center_vertical|right"
+            android:orientation="horizontal"
+            android:paddingRight="5dp" 
+            android:onClick="record">
+
+            <TextView
+                android:id="@+id/title_tv_option"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:enabled="true"
+                android:textSize="18dp"
+                android:text="record" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <com.amap.api.maps.MapView 
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/title" >
+    </com.amap.api.maps.MapView>
+    <TextView
+        android:id="@+id/show_all_dis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="总距离："
+        android:textStyle="bold"
+        android:visibility="visible"
+        android:layout_below="@+id/title"/>
+</RelativeLayout>
+
+
+
+
+ 
