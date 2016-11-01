@@ -60,11 +60,12 @@ public class MainActivity extends Activity implements LocationSource,
 	private ToggleButton btn;
 	private DbAdapter DbHepler;
 	private List<TraceLocation> mTracelocationlist = new ArrayList<TraceLocation>();
-	private int tracesize = 10;
-	private TraceOverlay mTraceoverlay;
 	private List<TraceOverlay> mOverlayList = new ArrayList<TraceOverlay>();
-	private TextView mResultShow;
 	private List<AMapLocation> recordList = new ArrayList<AMapLocation>();
+	private int tracesize = 30;
+	private int mDistance = 0;
+	private TraceOverlay mTraceoverlay;
+	private TextView mResultShow;
 	private Marker mlocMarker;
 
 	@Override
@@ -104,8 +105,8 @@ public class MainActivity extends Activity implements LocationSource,
 					DecimalFormat decimalFormat = new DecimalFormat("0.0");
 					mResultShow.setText(
 							decimalFormat.format(getTotalDistance() / 1000d) + "KM");
-//					LBSTraceClient mTraceClient = new LBSTraceClient(getApplicationContext());
-//					mTraceClient.queryProcessedTrace(2, Util.parseTraceLocationList(record.getPathline()) , LBSTraceClient.TYPE_AMAP, MainActivity.this);
+					LBSTraceClient mTraceClient = new LBSTraceClient(getApplicationContext());
+					mTraceClient.queryProcessedTrace(2, Util.parseTraceLocationList(record.getPathline()) , LBSTraceClient.TYPE_AMAP, MainActivity.this);
 					saveRecord(record.getPathline(), record.getDate());
 				}
 			}
@@ -382,21 +383,27 @@ public class MainActivity extends Activity implements LocationSource,
 	 * 轨迹纠偏成功回调。
 	 * @param lineID 纠偏的线路ID
 	 * @param linepoints 纠偏结果
-	 * @param distace 总距离
+	 * @param distance 总距离
 	 * @param watingtime 等待时间
      */
 	@Override
-	public void onFinished(int lineID, List<LatLng> linepoints, int distace, int watingtime) {
+	public void onFinished(int lineID, List<LatLng> linepoints, int distance, int watingtime) {
 		if (lineID == 1) {
 			if (linepoints != null && linepoints.size()>0) {
 				mTraceoverlay.add(linepoints);
-				mTraceoverlay.setDistance(mTraceoverlay.getDistance()+distace);
+				mDistance += distance;
+				mTraceoverlay.setDistance(mTraceoverlay.getDistance()+distance);
 				if (mlocMarker == null) {
-					mlocMarker = mAMap.addMarker(new MarkerOptions().position(linepoints.get(linepoints.size() - 1)).title("距离：" + getTotalDistance()+"米"));
+					mlocMarker = mAMap.addMarker(new MarkerOptions().position(linepoints.get(linepoints.size() - 1))
+							.icon(BitmapDescriptorFactory
+									.fromResource(R.drawable.point))
+							.title("距离：" + mDistance+"米"));
 					mlocMarker.showInfoWindow();
 				} else {
+					mlocMarker.setTitle("距离：" + mDistance+"米");
+					Toast.makeText(MainActivity.this, "距离"+mDistance, Toast.LENGTH_SHORT).show();
 					mlocMarker.setPosition(linepoints.get(linepoints.size() - 1));
-					mlocMarker.setTitle("距离：" + getTotalDistance()+"米");
+					mlocMarker.showInfoWindow();
 				}
 			}
 		} else if (lineID == 2) {
@@ -410,7 +417,7 @@ public class MainActivity extends Activity implements LocationSource,
 	}
 
 	/**
-	 * 获取总距离
+	 * 最后获取总距离
 	 * @return
      */
 	private int getTotalDistance() {
