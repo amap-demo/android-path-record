@@ -384,10 +384,10 @@ public class MainActivity extends Activity implements LocationSource,
 	 * @param lineID 纠偏的线路ID
 	 * @param linepoints 纠偏结果
 	 * @param distance 总距离
-	 * @param watingtime 等待时间
+	 * @param waitingtime 等待时间
      */
 	@Override
-	public void onFinished(int lineID, List<LatLng> linepoints, int distance, int watingtime) {
+	public void onFinished(int lineID, List<LatLng> linepoints, int distance, int waitingtime) {
 		if (lineID == 1) {
 			if (linepoints != null && linepoints.size()>0) {
 				mTraceoverlay.add(linepoints);
